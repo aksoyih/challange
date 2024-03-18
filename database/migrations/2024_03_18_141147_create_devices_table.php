@@ -16,6 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->string('device_uid', 255)->unique();
+            $table->string('client_token', 255);
             $table->enum('operating_system', ['android', 'ios']);
             $table->string('language', 2); // ISO 639-1
             $table->unsignedBigInteger('app_id')->index();

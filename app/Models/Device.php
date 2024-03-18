@@ -12,11 +12,20 @@ class Device extends Model
 
     protected $fillable = [
         'device_uid',
+        'client_token',
         'operating_system',
         'language',
         'app_id',
     ];
 
+    public static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function ($device) {
+            $device->client_token = Str::random(255);
+        });
+    }
     public function app(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(App::class);
