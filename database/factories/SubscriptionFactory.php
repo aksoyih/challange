@@ -19,12 +19,15 @@ class SubscriptionFactory extends Factory
         $device = \App\Models\Device::inRandomOrder()->first();
         $app = $device->app;
 
+        $expireDate = $this->faker->dateTimeBetween('-2 month', '+2 month');
+        $status = $expireDate < now() ? 'expired' : 'active';
 
         return [
             'app_id' => $app,
             'device_id' => $device,
             'receipt' => rand(100000000, 999999999),
-            'expire_date' => $this->faker->dateTimeBetween('now', '+1 year'),
+            'expire_date' => $expireDate,
+            'status' => $status,
         ];
     }
 }

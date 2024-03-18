@@ -31,16 +31,18 @@ class MockController extends Controller
 
     private function mockApi($receipt): void
     {
-        $validation = $this->validateReceipt($receipt);
+        $timezone = date_default_timezone_get();
 
         date_default_timezone_set('America/Chicago'); // UTC-6 timezone
 
         Http::fake([
             $this->endpoint => Http::response([
-                'status' => $validation,
+                'status' => $this->validateReceipt($receipt),
                 'expire-date' => date('Y-m-d H:i:s', strtotime('+1 month')),
-            ], $validation ? 200 : 400)
+            ], $this->generateStatus($receipt))
         ]);
+
+        date_default_timezone_set($timezone);
     }
 
     private function validateReceipt($receipt): bool
@@ -51,5 +53,14 @@ class MockController extends Controller
         }
 
         return false;
+    }
+
+    private function generateStatus($receipt): int
+    {
+        $status = $this->validateReceipt($receipt) ? 200 : 400;
+        if(intval(substr($receipt, -2)) % 2 == 0){
+            $status = 429;
+        }
+        return $status;
     }
 }

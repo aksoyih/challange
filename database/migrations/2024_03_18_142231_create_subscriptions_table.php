@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('device_id')->index();
             $table->foreign('device_id')->references('id')->on('devices');
             $table->unsignedInteger('receipt');
+            $table->enum('status', ['active', 'expired', 'cancelled'])->default('active');
             $table->dateTime('expire_date');
         });
     }

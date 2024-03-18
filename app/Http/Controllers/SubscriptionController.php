@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SubscriptionCheckerJob;
 use App\Models\Device;
 use App\Models\Subscription;
 use Illuminate\Http\Request;

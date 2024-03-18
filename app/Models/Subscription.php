@@ -16,6 +16,7 @@ class Subscription extends Model
         'device_id',
         'receipt',
         'expire_date',
+        'status',
     ];
 
     protected $hidden = [
