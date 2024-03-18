@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\CallbackWorker;
 use App\Jobs\SubscriptionCheckerJob;
+use App\Models\CallbackUrl;
 use App\Models\Device;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
@@ -34,6 +36,8 @@ class SubscriptionController extends Controller
                 $subscription->receipt = $request->receipt;
                 $subscription->expire_date = $authorize_response['expire-date'];
                 $subscription->save();
+
+                CallbackWorker::dispatch('started', $subscription);
 
                 return response()->json(['message' => 'Purchase authorized', 'subscription' => $subscription], 200);
             }else{

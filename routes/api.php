@@ -8,3 +8,4 @@ use Illuminate\Support\Facades\Route;
 Route::POST('device/register', [DeviceController::class, 'store']);
 Route::POST('/subscription/purchase', [SubscriptionController::class, 'purchase']);
 Route::POST('/subscription/check', [SubscriptionController::class, 'checkStatus']);
+Route::POST('/subscription/job', [SubscriptionController::class, 'job']);

@@ -34,9 +34,11 @@ class SubscriptionCheckerJob implements ShouldQueue
         if($authorize_response->status() === 200){
             $this->subscription->expire_date = $authorize_response['expire-date'];
             $this->subscription->save();
+            CallbackWorker::dispatch('renewed', $this->subscription);
         }elseif($authorize_response->status() === 400){
             $this->subscription->status = 'expired';
             $this->subscription->save();
+            CallbackWorker::dispatch('cancelled', $this->subscription);
         }else{ // probably rate limit http:429
             $this->release(60);
         }
