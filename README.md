@@ -48,9 +48,16 @@ This is a Laravel project that uses Laravel Sail for local development environme
    ```bash
    ./vendor/bin/sail artisan migrate
    ```
-8. Optional: Seed the database:
+8. Seed the database, needed to create save callback urls and apps into the database:
 
    ```bash
     ./vendor/bin/sail artisan db:seed
     ```
-9. Visit the application in your browser: [http://localhost](http://localhost)
+9. Run the queue worker:
+
+   ```bash
+   ./vendor/bin/sail artisan queue:work
+   ```
+
+
+https://engineering.teknasyon.com/supervisor-ile-laravel-horizon-kurulumu-ve-yap%C4%B1land%C4%B1r%C4%B1lmas%C4%B1-a0cfc4c697ab
