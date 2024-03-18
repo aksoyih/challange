@@ -21,6 +21,7 @@ class DeviceFactory extends Factory
         return [
             'device_uid' => $this->faker->regexify('[A-Za-z0-9]{255}'),
             'operating_system' => $this->faker->randomElement(['android', 'ios']),
+            'language' => $this->faker->languageCode,
             'app_id' => $app
         ];
     }

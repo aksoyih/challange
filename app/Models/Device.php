@@ -13,6 +13,7 @@ class Device extends Model
     protected $fillable = [
         'device_uid',
         'operating_system',
+        'language',
         'app_id',
     ];
 

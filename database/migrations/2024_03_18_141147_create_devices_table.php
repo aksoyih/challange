@@ -17,6 +17,7 @@ return new class extends Migration
             $table->softDeletes();
             $table->string('device_uid', 255)->unique();
             $table->enum('operating_system', ['android', 'ios']);
+            $table->string('language', 2); // ISO 639-1
             $table->unsignedBigInteger('app_id')->index();
             $table->foreign('app_id')->references('id')->on('apps');
         });
