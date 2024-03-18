@@ -6,17 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class App extends Model
+class Device extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name',
-        'description',
+        'operating_system',
+        'app_id',
     ];
 
-    public function devices(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function app(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->hasMany(Device::class);
+        return $this->belongsTo(App::class);
     }
 }
