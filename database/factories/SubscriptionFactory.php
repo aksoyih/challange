@@ -19,9 +19,6 @@ class SubscriptionFactory extends Factory
         $device = \App\Models\Device::inRandomOrder()->first();
         $app = $device->app;
 
-        /*
-         * expires_at endDate can be changed, let's suppose it is a month for now
-         */
 
         return [
             'app_id' => $app,
