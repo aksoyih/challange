@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Device extends Model
 {
@@ -16,6 +17,11 @@ class Device extends Model
         'operating_system',
         'language',
         'app_id',
+    ];
+
+    protected $hidden = [
+        'updated_at',
+        'deleted_at',
     ];
 
     public static function boot(): void

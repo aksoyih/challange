@@ -28,7 +28,31 @@ class DeviceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate(
+            [
+                'device_uid' => 'required|string|max:255',
+                'device_os' => 'required|in:android,ios',
+                'app_id' => 'required|exists:apps,id',
+                'language' => 'required|string|size:2',
+            ]
+        );
+
+        $device = Device::where('device_uid', $request->device_uid)->first();
+        if($device) {
+            $device->load('app');
+            return response()->json(
+                [
+                    'status' => 'register OK',
+                    'device' => $device
+                ], 200);
+        }
+
+        $device = Device::create($request->all());
+        return response()->json(
+            [
+                'status' => 'register OK',
+                'device' => $device
+            ], 201);
     }
 
     /**
