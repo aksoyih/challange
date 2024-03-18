@@ -24,7 +24,7 @@ class SubscriptionFactory extends Factory
             'app_id' => $app,
             'device_id' => $device,
             'receipt' => rand(100000000, 999999999),
-            'token' => $this->faker->regexify('[A-Za-z0-9]{36}') // random token
+            'expire_date' => $this->faker->dateTimeBetween('now', '+1 year'),
         ];
     }
 }

@@ -19,9 +19,8 @@ return new class extends Migration
             $table->foreign('app_id')->references('id')->on('apps');
             $table->unsignedBigInteger('device_id')->index();
             $table->foreign('device_id')->references('id')->on('devices');
-            $table->string('token', 36);
             $table->unsignedInteger('receipt');
-            $table->enum('status', ['active', 'renewed', 'canceled'])->default('active');
+            $table->timestamp('expire_date');
         });
     }
 

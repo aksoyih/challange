@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Subscription extends Model
@@ -13,16 +14,16 @@ class Subscription extends Model
     protected $fillable = [
         'app_id',
         'device_id',
-        'token',
-        'status',
+        'receipt',
+        'expire_date',
     ];
 
-    public function app()
+    public function app(): BelongsTo
     {
         return $this->belongsTo(App::class);
     }
 
-    public function device()
+    public function device(): BelongsTo
     {
         return $this->belongsTo(Device::class);
     }
