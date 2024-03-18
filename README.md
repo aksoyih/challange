@@ -58,6 +58,3 @@ This is a Laravel project that uses Laravel Sail for local development environme
    ```bash
    ./vendor/bin/sail artisan queue:work
    ```
-
-
-https://engineering.teknasyon.com/supervisor-ile-laravel-horizon-kurulumu-ve-yap%C4%B1land%C4%B1r%C4%B1lmas%C4%B1-a0cfc4c697ab
