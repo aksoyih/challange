@@ -18,6 +18,16 @@ class Subscription extends Model
         'expire_date',
     ];
 
+    protected $hidden = [
+        'updated_at',
+        'deleted_at',
+    ];
+
+    public function isExpired(): bool
+    {
+        return now() > $this->expire_date;
+    }
+
     public function app(): BelongsTo
     {
         return $this->belongsTo(App::class);

@@ -42,4 +42,20 @@ class SubscriptionController extends Controller
 
         return response()->json(['message' => 'Device not found'], 404);
     }
+
+    public function checkStatus(Request $request){
+        $request->validate([
+            'client_id' => 'required|exists:devices,client_token',
+        ]);
+
+        $device = Device::where('client_token', $request->client_id)->first()->with('subscriptions')->first();
+
+        $subscription = $device->subscriptions->first();
+
+        if($subscription->isExpired()){
+            return response()->json(['message' => 'Subscription expired', 'subscription' => $subscription], 400);
+        }
+
+        return response()->json(['message' => 'Subscription active', 'subscription' => $subscription], 200);
+    }
 }
