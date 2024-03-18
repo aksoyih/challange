@@ -19,4 +19,9 @@ class App extends Model
     {
         return $this->hasMany(Device::class);
     }
+
+    public function subscriptions(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Subscription::class);
+    }
 }
