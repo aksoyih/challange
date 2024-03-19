@@ -11,8 +11,6 @@ class MockController extends Controller
 {
     const GOOGLE_API = 'https://mock.api.google.com/authorise_purchase';
     const APPLE_API = 'https://mock.api.apple.com/authorise_purchase';
-    private $username;
-    private $password;
 
     private string $endpoint;
 
@@ -20,17 +18,17 @@ class MockController extends Controller
     {
         if($os == 'android') {
             $this->endpoint = self::GOOGLE_API;
-            $this->username = $_ENV['GOOGLE_API_USERNAME'];
-            $this->password = $_ENV['GOOGLE_API_PASSWORD'];
+            $username = $_ENV['GOOGLE_API_USERNAME'];
+            $password = $_ENV['GOOGLE_API_PASSWORD'];
         }else{
             $this->endpoint = self::APPLE_API;
-            $this->username = $_ENV['APPLE_API_USERNAME'];
-            $this->password = $_ENV['APPLE_API_PASSWORD'];
+            $username = $_ENV['APPLE_API_USERNAME'];
+            $password = $_ENV['APPLE_API_PASSWORD'];
         }
 
         $this->mockApi($receipt);
 
-        return Http::withBasicAuth($this->username, $this->password)
+        return Http::withBasicAuth($username, $password)
         ->post($this->endpoint, [
             'receipt' => $receipt,
         ]);
