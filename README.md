@@ -2,11 +2,18 @@
 
 This is a Laravel project that uses Laravel Sail for local development environment setup using Docker.
 
+## What did I do?
+- I created all sections stated in the documentation. This app contains: API, Worker, Callback and a simple reporting method.
+- The API reference is given in this README file, a Postman collection is also provided ("challenge.postman_collection.json")
+- Worker is created using Laravel's built in task scheduling with Redis and configured to run every hour. It dispatches a new job for each of the subscriptions that satisfy the requirements. The job checks the subscription by querying mock api (Google or Apple based on device os) and either updates expire date or change its status to expired. Based on the respective event, a callback job is also dispatched. Laravel Horizion can be used to monitor the Redis queue.
+- Callback is created as a job that handles 3 events: started, renewed and canceled. The job creates a HTTP POST request to the callback endpoint saved in the DB. If the endpoint does not return with 200 or 201, the job is released back into the queue to be dispatched after 60 seconds. It retries for 3 times before giving up and fail.
+
 ## Requirements
 
 - Docker Desktop installed on your machine.
 
 ## Getting Started
+It is important to seed the database since it saves apps and callback endpoints to the DB.
 
 1. Clone the repository:
 
