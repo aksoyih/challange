@@ -53,9 +53,9 @@ class SubscriptionController extends Controller
             'client_id' => 'required|exists:devices,client_token',
         ]);
 
-        $device = Device::where('client_token', $request->client_id)->first()->with('subscriptions')->first();
+        $device = Device::where('client_token', $request->client_id)->first();
 
-        $subscription = $device->subscriptions->first();
+        $subscription = $device->subscriptions->where('app_id', $device->app_id)->first();
 
         if($subscription->isExpired()){
             return response()->json(['message' => 'Subscription expired', 'subscription' => $subscription], 400);

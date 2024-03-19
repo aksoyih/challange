@@ -37,7 +37,9 @@ class DeviceController extends Controller
             ]
         );
 
-        $device = Device::where('device_uid', $request->device_uid)->first();
+        $device = Device::where('device_uid', $request->device_uid)
+                ->where('app_id', $request->app_id)
+                ->first();
         if($device) {
             $device->load('app');
             return response()->json(
