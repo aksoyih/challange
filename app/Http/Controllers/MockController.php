@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
+use DateTimeZone;
 use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -36,18 +38,15 @@ class MockController extends Controller
 
     private function mockApi($receipt): void
     {
-        $timezone = date_default_timezone_get();
-
-        date_default_timezone_set('America/Chicago'); // UTC-6 timezone
+        $expireDate = new DateTime(null, new DateTimeZone('America/Chicago')); // UTC-6 timezone
+        $expireDate->modify('+1 month');
 
         Http::fake([
             $this->endpoint => Http::response([
                 'status' => $this->validateReceipt($receipt),
-                'expire-date' => date('Y-m-d H:i:s', strtotime('+1 month')),
+                'expire-date' => $expireDate->format('Y-m-d H:i:s'),
             ], $this->generateStatus($receipt))
         ]);
-
-        date_default_timezone_set($timezone); // Reset timezone
     }
 
     private function validateReceipt($receipt): bool
