@@ -11,6 +11,8 @@ class MockController extends Controller
 {
     const GOOGLE_API = 'https://mock.api.google.com/authorise_purchase';
     const APPLE_API = 'https://mock.api.apple.com/authorise_purchase';
+    private $username;
+    private $password;
 
     private string $endpoint;
 
@@ -18,13 +20,18 @@ class MockController extends Controller
     {
         if($os == 'android') {
             $this->endpoint = self::GOOGLE_API;
+            $this->username = $_ENV['GOOGLE_API_USERNAME'];
+            $this->password = $_ENV['GOOGLE_API_PASSWORD'];
         }else{
             $this->endpoint = self::APPLE_API;
+            $this->username = $_ENV['APPLE_API_USERNAME'];
+            $this->password = $_ENV['APPLE_API_PASSWORD'];
         }
 
         $this->mockApi($receipt);
 
-        return Http::post($this->endpoint, [
+        return Http::withBasicAuth($this->username, $this->password)
+        ->post($this->endpoint, [
             'receipt' => $receipt,
         ]);
     }
@@ -42,7 +49,7 @@ class MockController extends Controller
             ], $this->generateStatus($receipt))
         ]);
 
-        date_default_timezone_set($timezone);
+        date_default_timezone_set($timezone); // Reset timezone
     }
 
     private function validateReceipt($receipt): bool
