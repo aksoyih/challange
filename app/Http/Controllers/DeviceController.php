@@ -31,7 +31,7 @@ class DeviceController extends Controller
         $request->validate(
             [
                 'device_uid' => 'required|string|max:255',
-                'device_os' => 'required|in:android,ios',
+                'operating_system' => 'required|in:android,ios',
                 'app_id' => 'required|exists:apps,id',
                 'language' => 'required|string|size:2',
             ]
@@ -50,6 +50,7 @@ class DeviceController extends Controller
         }
 
         $device = Device::create($request->all());
+        $device->load('app');
         return response()->json(
             [
                 'status' => 'register OK',

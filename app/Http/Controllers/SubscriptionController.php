@@ -18,14 +18,15 @@ class SubscriptionController extends Controller
      */
     public function purchase(Request $request){
         $request->validate([
-            'client_id' => 'required|exists:devices,client_token',
+            'client_token' => 'required|exists:devices,client_token',
             'receipt' => 'required|string',
         ]);
 
-        $device = Device::where('client_token', $request->client_id)->first();
+        $device = Device::where('client_token', $request->client_token)->first();
         if($device){
             $subscription = Subscription::where('device_id', $device->id)->first();
             if($subscription){
+                $subscription->load('app', 'device');
                 return response()->json(['message' => 'Subscription already exists', 'subscription' => $subscription], 400);
             }
 
@@ -37,6 +38,8 @@ class SubscriptionController extends Controller
                 $subscription->receipt = $request->receipt;
                 $subscription->expire_date = $authorize_response['expire-date'];
                 $subscription->save();
+
+                $subscription->load('app', 'device');
 
                 CallbackWorker::dispatch('started', $subscription);
 
@@ -51,10 +54,10 @@ class SubscriptionController extends Controller
 
     public function checkStatus(Request $request){
         $request->validate([
-            'client_id' => 'required|exists:devices,client_token',
+            'client_token' => 'required|exists:devices,client_token',
         ]);
 
-        $device = Device::where('client_token', $request->client_id)->first();
+        $device = Device::where('client_token', $request->client_token)->first();
 
         $subscription = $device->subscriptions->where('app_id', $device->app_id)->first();
 
