@@ -8,6 +8,7 @@ use App\Models\CallbackUrl;
 use App\Models\Device;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class SubscriptionController extends Controller
@@ -62,5 +63,24 @@ class SubscriptionController extends Controller
         }
 
         return response()->json(['message' => 'Subscription active', 'subscription' => $subscription], 200);
+    }
+
+    public function getSubscriptionReport()
+    {
+        $subscriptions = DB::table('subscriptions')
+            ->join('devices', 'subscriptions.device_id', '=', 'devices.id')
+            ->join('apps', 'subscriptions.app_id', '=', 'apps.id')
+            ->select(
+                'apps.name as app_name',
+                'devices.operating_system',
+                DB::raw('DATE(subscriptions.created_at) as day'),
+                DB::raw('SUM(CASE WHEN subscriptions.status = "active" THEN 1 ELSE 0 END) as started'),
+                DB::raw('SUM(CASE WHEN subscriptions.status = "expired" THEN 1 ELSE 0 END) as ended'),
+                DB::raw('SUM(CASE WHEN subscriptions.status = "cancelled" THEN 1 ELSE 0 END) as renewed')
+            )
+            ->groupBy('app_name', 'operating_system', 'day')
+            ->get();
+
+        return response()->json($subscriptions);
     }
 }
