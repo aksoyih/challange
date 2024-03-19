@@ -22,6 +22,9 @@ class Subscription extends Model
     protected $hidden = [
         'updated_at',
         'deleted_at',
+        'id',
+        'app_id',
+        'device_id',
     ];
 
     public function isExpired(): bool

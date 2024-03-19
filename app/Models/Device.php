@@ -22,6 +22,8 @@ class Device extends Model
     protected $hidden = [
         'updated_at',
         'deleted_at',
+        'id',
+        'app_id'
     ];
 
     public static function boot(): void

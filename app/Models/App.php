@@ -15,6 +15,12 @@ class App extends Model
         'description',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
     public function devices(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Device::class);
