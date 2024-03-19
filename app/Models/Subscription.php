@@ -27,6 +27,12 @@ class Subscription extends Model
         'device_id',
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
+        'expire_date' => 'datetime:Y-m-d H:i:s',
+    ];
+
     public function isExpired(): bool
     {
         return now() > $this->expire_date;
