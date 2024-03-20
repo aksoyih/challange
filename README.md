@@ -43,28 +43,31 @@ It is important to seed the database since it saves apps and callback endpoints 
     laravelsail/php83-composer:latest \
     composer install --ignore-platform-reqs
    ```
+   
+5. Run Sail
 
-5. Generate application key:
+   ```bash
+    ./vendor/bin/sail up -d
+   ```
+   
+6. Generate application key:
 
    ```bash
    ./vendor/bin/sail artisan key:generate
    ```
-
-6. Run Docker containers:
-
-   ```bash
-   ./vendor/bin/sail up -d
-   ```
+   
 7. Run migrations:
 
    ```bash
    ./vendor/bin/sail artisan migrate
    ```
+   
 8. Seed the database, needed to create save callback urls and apps into the database:
 
    ```bash
     ./vendor/bin/sail artisan db:seed
     ```
+   
 9. Run the queue worker:
 
    ```bash
