@@ -28,8 +28,10 @@ class RenewedEventJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $url = CallbackUrl::where('event', 'renewed')->first()->url;
-        // send curl request to $url
+        $url = CallbackUrl::where('event', 'started')
+            ->where('app_id', $this->subscription->app_id)
+            ->first()
+            ->url;
 
         $response = Http::post($url, [
             'subscription_id' => $this->subscription->id,
