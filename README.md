@@ -36,7 +36,7 @@ It is important to seed the database since it saves apps and callback endpoints 
 4. Install Composer dependencies:
 
    ```bash
-   ./vendor/bin/sail composer install
+   composer install
    ```
 
 5. Generate application key:
