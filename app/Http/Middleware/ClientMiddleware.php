@@ -16,11 +16,10 @@ class ClientMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // get client token from request header
         $clientToken = $request->header('Client-Token');
 
         if(!$clientToken) {
-            return response()->json(['error' => 'Client-Token is required'], 400);
+            return response()->json(['error' => 'Failed to authenticate, Client-Token is required'], 401);
         }
 
         $device = Device::where('client_token', $clientToken)->first();
