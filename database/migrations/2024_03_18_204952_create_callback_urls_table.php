@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->enum('event', ['started', 'renewed', 'cancelled']);
-            $table->unsignedInteger('app_id');
+            $table->unsignedBigInteger('app_id')->index();
             $table->foreign('app_id')->references('id')->on('apps');
             $table->string('url');
         });
