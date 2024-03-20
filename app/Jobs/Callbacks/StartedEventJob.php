@@ -33,6 +33,7 @@ class StartedEventJob implements ShouldQueue
 
         $response = Http::post($url, [
             'subscription_id' => $this->subscription->id,
+            'app_id' => $this->subscription->app_id,
             'event' => 'started',
         ]);
 
