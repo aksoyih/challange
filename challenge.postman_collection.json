@@ -99,17 +99,16 @@
 						"key": "Accept",
 						"value": "application/json",
 						"type": "text"
+					},
+					{
+						"key": "Client-Token",
+						"value": "{{client_token}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "urlencoded",
 					"urlencoded": [
-						{
-							"key": "client_token",
-							"value": "{{client_token}}",
-							"description": "Required. Device identifier",
-							"type": "text"
-						},
 						{
 							"key": "receipt",
 							"value": "1230912303",
@@ -156,18 +155,16 @@
 						"key": "Accept",
 						"value": "application/json",
 						"type": "text"
+					},
+					{
+						"key": "Client-Token",
+						"value": "{{client_token}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "client_token",
-							"value": "{{client_token}}",
-							"description": "Required. Clinet token",
-							"type": "text"
-						}
-					]
+					"urlencoded": []
 				},
 				"url": {
 					"raw": "localhost/api/subscription/check",

@@ -70,6 +70,7 @@ It is important to seed the database since it saves apps and callback endpoints 
 ## API Reference
 
 ### Register a device
+Public route to register a device. It creates a new device record in the database and returns a client token to be used in the following requests.
 
 ```http
   POST /device/register
@@ -102,6 +103,7 @@ Example response:
 ```
 
 ### Purchase a subscription
+Protected route to purchase a subscription. It authorizes the purchase and creates a new subscription record in the database. Should be authenticated with Client-Token header.
 
 ```http
   POST /subscription/purchase
@@ -109,7 +111,6 @@ Example response:
 
 | Parameter      | Type      | Description                                      | Example                          |
 |:---------------|:----------|:-------------------------------------------------|:---------------------------------|
-| `client_token` | `string`  | **Required**. Device identifier                  | wzeppKXtgLPfiJBmCgsaGssZuatWcwul |
 | `receipt`      | `string`  | **Required**. Device operating system            | android                          |
 
 Example response:
@@ -137,14 +138,11 @@ Example response:
 ```
 
 ### Check a subscription status
+Protected route to check a subscription status. Should be authenticated with Client-Token header.
 
 ```http
   POST /subscription/check
 ```
-
-| Parameter      | Type     | Description                | Example                                                                                                                                                                                                                                                         |
-|:---------------|:---------|:---------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `client_token` | `string` | **Required**. Clinet token | JGiFgyozyrQtvmrqHtlhsRBmin57BqGxwfWR8dL2k6XvGY3IJHwVY5GYMJxVaLijNv3zKj7zen8QRVTMFmZO5LG2Vj3IjZejwJayzuz6Fd1QW5KV9xeWmH4gMIRToGfeKNt1w6CHYoz9JN4nuQ6TBAkSMgTtdW0ncTRJRvduct4lkAoOPMunFDVT5Aa0gQ6mtjKm7DBFh9JWxlUAPwlkc6aSp8pj8JEckLmp6FnAlmlNjB3IHP6zPsRIqr0TTBs |
 
 Example response:
 ```json
