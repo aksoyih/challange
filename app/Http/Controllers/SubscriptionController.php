@@ -18,46 +18,39 @@ class SubscriptionController extends Controller
      */
     public function purchase(Request $request){
         $request->validate([
-            'client_token' => 'required|exists:devices,client_token',
             'receipt' => 'required|string',
         ]);
 
-        $device = Device::where('client_token', $request->client_token)->first();
-        if($device){
-            $subscription = Subscription::where('device_id', $device->id)->first();
-            if($subscription){
-                $subscription->load('app', 'device');
-                return response()->json(['message' => 'Subscription already exists', 'subscription' => $subscription], 400);
-            }
+        $device = $request->device;
 
-            $authorize_response = (new MockController)->authorizePurchase($device->operating_system, $request->receipt);
-            if($authorize_response->status() === 200){
-                $subscription = new Subscription;
-                $subscription->device_id = $device->id;
-                $subscription->app_id = $device->app_id;
-                $subscription->receipt = $request->receipt;
-                $subscription->expire_date = $authorize_response['expire-date'];
-                $subscription->save();
-
-                $subscription->load('app', 'device');
-
-                CallbackWorker::dispatch('started', $subscription);
-
-                return response()->json(['message' => 'Purchase authorized', 'subscription' => $subscription], 200);
-            }else{
-                return response()->json(['message' => 'Purchase not authorized'], 400);
-            }
+        $subscription = Subscription::where('device_id', $device->id)->first();
+        if($subscription){
+            $subscription->load('app', 'device');
+            return response()->json(['message' => 'Subscription already exists', 'subscription' => $subscription], 400);
         }
 
-        return response()->json(['message' => 'Device not found'], 404);
+        $authorize_response = (new MockController)->authorizePurchase($device->operating_system, $request->receipt);
+        if($authorize_response->status() === 200){
+            $subscription = new Subscription;
+            $subscription->device_id = $device->id;
+            $subscription->app_id = $device->app_id;
+            $subscription->receipt = $request->receipt;
+            $subscription->expire_date = $authorize_response['expire-date'];
+            $subscription->save();
+
+            $subscription->load('app', 'device');
+
+            CallbackWorker::dispatch('started', $subscription);
+
+            return response()->json(['message' => 'Purchase authorized', 'subscription' => $subscription], 200);
+        }else{
+            return response()->json(['message' => 'Purchase not authorized'], 400);
+        }
+
     }
 
     public function checkStatus(Request $request){
-        $request->validate([
-            'client_token' => 'required|exists:devices,client_token',
-        ]);
-
-        $device = Device::where('client_token', $request->client_token)->first();
+        $device = $request->device;
 
         $subscription = $device->subscriptions->where('app_id', $device->app_id)->first();
 
