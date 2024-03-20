@@ -26,7 +26,7 @@ class SubscriptionController extends Controller
         $subscription = Subscription::where('device_id', $device->id)->first();
         if($subscription){
             $subscription->load('app', 'device');
-            return response()->json(['message' => 'Subscription already exists', 'subscription' => $subscription], 400);
+            return response()->json(['message' => 'Subscription already exists', 'subscription' => $subscription], 200);
         }
 
         $authorize_response = (new MockController)->authorizePurchase($device->operating_system, $request->receipt);
@@ -55,7 +55,10 @@ class SubscriptionController extends Controller
         $subscription = $device->subscriptions->where('app_id', $device->app_id)->first();
 
         if($subscription->isExpired()){
-            return response()->json(['message' => 'Subscription expired', 'subscription' => $subscription], 400);
+            $subscription->status = 'expired';
+            $subscription->save();
+
+            return response()->json(['message' => 'Subscription expired', 'subscription' => $subscription], 403);
         }
 
         return response()->json(['message' => 'Subscription active', 'subscription' => $subscription], 200);
